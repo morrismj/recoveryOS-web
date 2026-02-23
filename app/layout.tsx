@@ -1,6 +1,7 @@
 import "../styles/globals.css";
 import type { Metadata } from "next";
 import Providers from "./providers";
+import AppHeader from "../components/nav/AppHeader";
 
 export const metadata: Metadata = {
   title: "RecoveryOS",
@@ -26,7 +27,10 @@ export default function RootLayout({
       </head>
       <body>
         <Providers>
-          <main className="px-5 py-8 md:px-10">{children}</main>
+          <main className="px-5 py-8 md:px-10">
+            <AppHeader />
+            {children}
+          </main>
         </Providers>
       </body>
     </html>
