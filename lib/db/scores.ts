@@ -29,3 +29,10 @@ export async function upsertRecoveryScore(
     }
   });
 }
+
+export async function getLatestRecoveryScore(userId: string) {
+  return db.recoveryScore.findFirst({
+    where: { userId },
+    orderBy: { date: "desc" }
+  });
+}
