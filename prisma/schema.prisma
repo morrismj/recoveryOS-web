@@ -37,6 +37,7 @@ enum ImportStatus {
 model UserProfile {
   id        String   @id @db.Uuid
   email     String   @unique
+  passwordHash String @map("password_hash")
   timezone  String
   createdAt DateTime @default(now()) @map("created_at")
 

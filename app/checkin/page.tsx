@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { createOrUpdateCheckin } from "./actions";
 import Disclaimer from "../../components/legal/Disclaimer";
 
@@ -9,12 +11,54 @@ const today = new Date().toISOString().slice(0, 10);
 const ratingOptions = [1, 2, 3, 4, 5];
 
 export default function CheckinPage() {
+  const { status } = useSession();
   const [sleepHours, setSleepHours] = useState(7.5);
   const [stress, setStress] = useState(3);
   const [soreness, setSoreness] = useState(3);
   const [energy, setEnergy] = useState(3);
   const [trainingLoad, setTrainingLoad] = useState("light");
   const [alcohol, setAlcohol] = useState("none");
+
+  if (status === "loading") {
+    return (
+      <div className="mx-auto flex max-w-xl flex-col gap-6">
+        <div className="h-6 w-24 animate-pulse rounded-full bg-fog-100" />
+        <div className="h-10 w-3/4 animate-pulse rounded-2xl bg-fog-100" />
+        <div className="h-64 animate-pulse rounded-3xl bg-fog-100" />
+      </div>
+    );
+  }
+
+  if (status === "unauthenticated") {
+    return (
+      <div className="mx-auto flex max-w-xl flex-col gap-6">
+        <header className="space-y-2">
+          <p className="text-xs uppercase tracking-[0.3em] text-ink-800">
+            Daily Check-in
+          </p>
+          <h1 className="text-3xl font-semibold">Sign in to continue</h1>
+          <p className="text-sm text-ink-800">
+            Create an account to save your check-ins and see your recovery score.
+          </p>
+        </header>
+        <div className="grid gap-3">
+          <Link
+            className="rounded-xl bg-ink-950 px-4 py-3 text-sm text-fog-50"
+            href="/auth/signin"
+          >
+            Sign in
+          </Link>
+          <Link
+            className="rounded-xl border border-ink-800 px-4 py-3 text-sm"
+            href="/auth/signup"
+          >
+            Create account
+          </Link>
+        </div>
+        <Disclaimer />
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto flex max-w-xl flex-col gap-6">

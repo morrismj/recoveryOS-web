@@ -1,6 +1,9 @@
+import { getServerSession } from "next-auth";
+import { authOptions } from "./options";
+
 export async function getCurrentUserId(): Promise<string | null> {
-  // TODO: Replace with real auth integration (e.g. Clerk/NextAuth).
-  return process.env.RECOVERYOS_USER_ID ?? null;
+  const session = await getServerSession(authOptions);
+  return session?.user?.id ?? null;
 }
 
 export async function requireUserId(): Promise<string> {
