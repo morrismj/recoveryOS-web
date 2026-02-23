@@ -1,12 +1,20 @@
 import "../styles/globals.css";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Providers from "./providers";
 import AppHeader from "../components/nav/AppHeader";
+
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 
 export const metadata: Metadata = {
   title: "RecoveryOS",
   description: "Daily recovery check-ins and insights.",
   manifest: "/manifest.json",
+  metadataBase: new URL(siteUrl)
+};
+
+export const viewport: Viewport = {
   themeColor: "#f4f6f8"
 };
 
