@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { db } from "./index";
 
 export type ImportStatus = "uploaded" | "previewed" | "processed" | "failed";
@@ -14,7 +15,7 @@ export async function createImportJob(options: {
       type: "generic_csv",
       originalFilename: options.originalFilename,
       status: options.status,
-      rowErrors: options.rowErrors ?? null
+      rowErrors: options.rowErrors ?? Prisma.DbNull
     }
   });
 }
@@ -32,7 +33,7 @@ export async function updateImportJob(options: {
     },
     data: {
       status: options.status,
-      rowErrors: options.rowErrors ?? null
+      rowErrors: options.rowErrors ?? Prisma.DbNull
     }
   });
 
