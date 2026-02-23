@@ -37,5 +37,5 @@ export async function createOrUpdateCheckin(formData: FormData) {
   await upsertRecoveryScore(userId, payload.date, score);
 
   revalidatePath("/today");
-  return { checkinId: checkin.id, score };
+  void checkin;
 }
