@@ -1,0 +1,31 @@
+import "../styles/globals.css";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "RecoveryOS",
+  description: "Daily recovery check-ins and insights.",
+  manifest: "/manifest.json",
+  themeColor: "#f4f6f8"
+};
+
+export default function RootLayout({
+  children
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@300;400;600&family=Space+Grotesk:wght@400;600;700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body>
+        <main className="px-5 py-8 md:px-10">{children}</main>
+      </body>
+    </html>
+  );
+}

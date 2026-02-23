@@ -1,0 +1,19 @@
+# Node / Next
+node_modules/
+.next/
+out/
+dist/
+build/
+coverage/
+
+# Logs & env
+*.log
+.env*
+
+# Editors & OS
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+.vscode/
+.idea/

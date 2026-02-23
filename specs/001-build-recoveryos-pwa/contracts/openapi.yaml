@@ -1,0 +1,354 @@
+openapi: 3.0.3
+info:
+  title: RecoveryOS MVP API
+  version: 0.1.0
+servers:
+  - url: /api
+security:
+  - bearerAuth: []
+paths:
+  /checkins:
+    get:
+      summary: List daily check-ins
+      parameters:
+        - in: query
+          name: start_date
+          schema:
+            type: string
+            format: date
+        - in: query
+          name: end_date
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Check-ins
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DailyCheckin'
+    post:
+      summary: Create or update a daily check-in
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DailyCheckinInput'
+      responses:
+        '200':
+          description: Check-in saved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DailyCheckin'
+  /scores:
+    get:
+      summary: List recovery scores
+      parameters:
+        - in: query
+          name: start_date
+          schema:
+            type: string
+            format: date
+        - in: query
+          name: end_date
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Scores
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecoveryScore'
+  /insights:
+    get:
+      summary: List insight cards for a date range
+      parameters:
+        - in: query
+          name: range
+          schema:
+            type: string
+            enum: [7d, 30d, 90d]
+      responses:
+        '200':
+          description: Insights
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InsightCard'
+  /meals:
+    get:
+      summary: List meal entries
+      parameters:
+        - in: query
+          name: start_date
+          schema:
+            type: string
+            format: date
+        - in: query
+          name: end_date
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Meals
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Meal'
+    post:
+      summary: Create a meal entry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MealInput'
+      responses:
+        '200':
+          description: Meal saved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Meal'
+  /meals/{id}:
+    delete:
+      summary: Delete a meal entry
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Deleted
+  /imports:
+    post:
+      summary: Upload CSV for import (preview)
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Preview results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImportPreview'
+  /imports/confirm:
+    post:
+      summary: Confirm import
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImportConfirm'
+      responses:
+        '200':
+          description: Import job
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImportJob'
+  /exports:
+    get:
+      summary: Export user data as CSV
+      responses:
+        '200':
+          description: CSV file
+          content:
+            text/csv:
+              schema:
+                type: string
+  /account/delete:
+    post:
+      summary: Delete account and all associated data
+      responses:
+        '204':
+          description: Deleted
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    DailyCheckinInput:
+      type: object
+      required:
+        - date
+        - sleep_hours
+        - stress
+        - soreness
+        - training_load
+        - alcohol
+        - energy
+      properties:
+        date:
+          type: string
+          format: date
+        sleep_hours:
+          type: number
+        stress:
+          type: integer
+          minimum: 1
+          maximum: 5
+        soreness:
+          type: integer
+          minimum: 1
+          maximum: 5
+        training_load:
+          type: string
+          enum: [none, light, medium, hard]
+        alcohol:
+          type: string
+          enum: [none, 1-2, 3+]
+        energy:
+          type: integer
+          minimum: 1
+          maximum: 5
+        resting_hr:
+          type: integer
+          nullable: true
+        hrv:
+          type: number
+          nullable: true
+        notes:
+          type: string
+          nullable: true
+    DailyCheckin:
+      allOf:
+        - $ref: '#/components/schemas/DailyCheckinInput'
+        - type: object
+          properties:
+            id:
+              type: string
+            created_at:
+              type: string
+              format: date-time
+            updated_at:
+              type: string
+              format: date-time
+    RecoveryScore:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        recovery_score:
+          type: integer
+          minimum: 0
+          maximum: 100
+        pillars:
+          type: object
+          properties:
+            sleep_integrity:
+              type: integer
+            hormonal_stability:
+              type: integer
+            load_management:
+              type: integer
+            inflammation_control:
+              type: integer
+            cognitive_bandwidth:
+              type: integer
+        explanation:
+          type: string
+        model_version:
+          type: string
+    InsightCard:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        metric:
+          type: string
+    MealInput:
+      type: object
+      required:
+        - timestamp
+        - photo_url
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        photo_url:
+          type: string
+        meal_type:
+          type: string
+          enum: [breakfast, lunch, dinner, snack]
+        tags:
+          type: array
+          items:
+            type: string
+        note:
+          type: string
+    Meal:
+      allOf:
+        - $ref: '#/components/schemas/MealInput'
+        - type: object
+          properties:
+            id:
+              type: string
+            created_at:
+              type: string
+              format: date-time
+    ImportPreview:
+      type: object
+      properties:
+        valid_rows:
+          type: integer
+        invalid_rows:
+          type: integer
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              row:
+                type: integer
+              message:
+                type: string
+    ImportConfirm:
+      type: object
+      required:
+        - import_id
+      properties:
+        import_id:
+          type: string
+    ImportJob:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum: [uploaded, previewed, processed, failed]
+        created_at:
+          type: string
+          format: date-time
