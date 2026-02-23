@@ -1,14 +1,6 @@
-import { getSupabaseClient } from "../supabase/client";
-
 export async function getCurrentUserId(): Promise<string | null> {
-  const supabase = getSupabaseClient();
-  const { data, error } = await supabase.auth.getSession();
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return data.session?.user?.id ?? null;
+  // TODO: Replace with real auth integration (e.g. Clerk/NextAuth).
+  return process.env.RECOVERYOS_USER_ID ?? null;
 }
 
 export async function requireUserId(): Promise<string> {

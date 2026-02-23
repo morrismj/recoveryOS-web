@@ -1,26 +1,51 @@
 import { db } from "./index";
 import type { DailyCheckinInput } from "../scoring/v1";
 
-export type DailyCheckinRecord = DailyCheckinInput & {
-  id: string;
-  user_id: string;
-  created_at: string;
-  updated_at: string;
-};
-
 export async function upsertDailyCheckin(
   userId: string,
   payload: DailyCheckinInput
-): Promise<DailyCheckinRecord> {
-  const { data, error } = await db
-    .from("daily_checkins")
-    .upsert({ ...payload, user_id: userId }, { onConflict: "user_id,date" })
-    .select()
-    .single();
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return data as DailyCheckinRecord;
+) {
+  return db.dailyCheckin.upsert({
+    where: {
+      userId_date: {
+        userId,
+        date: new Date(payload.date)
+      }
+    },
+    create: {
+      userId,
+      date: new Date(payload.date),
+      sleepHours: payload.sleep_hours,
+      stress: payload.stress,
+      soreness: payload.soreness,
+      trainingLoad: payload.training_load,
+      alcohol:
+        payload.alcohol === "1-2"
+          ? "one_two"
+          : payload.alcohol === "3+"
+            ? "three_plus"
+            : "none",
+      energy: payload.energy,
+      restingHr: payload.resting_hr ?? null,
+      hrv: payload.hrv ?? null,
+      notes: payload.notes ?? null
+    },
+    update: {
+      sleepHours: payload.sleep_hours,
+      stress: payload.stress,
+      soreness: payload.soreness,
+      trainingLoad: payload.training_load,
+      alcohol:
+        payload.alcohol === "1-2"
+          ? "one_two"
+          : payload.alcohol === "3+"
+            ? "three_plus"
+            : "none",
+      energy: payload.energy,
+      restingHr: payload.resting_hr ?? null,
+      hrv: payload.hrv ?? null,
+      notes: payload.notes ?? null,
+      updatedAt: new Date()
+    }
+  });
 }

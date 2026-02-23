@@ -8,11 +8,13 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "vitest"
+    "test": "vitest",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.49.1",
+    "@prisma/client": "^5.18.0",
     "next": "^14.2.5",
+    "prisma": "^5.18.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "recharts": "^2.12.7"

@@ -1,0 +1,116 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TrainingLoad {
+  none
+  light
+  medium
+  hard
+}
+
+enum AlcoholIntake {
+  none
+  one_two    @map("1-2")
+  three_plus @map("3+")
+}
+
+enum MealType {
+  breakfast
+  lunch
+  dinner
+  snack
+}
+
+enum ImportStatus {
+  uploaded
+  previewed
+  processed
+  failed
+}
+
+model UserProfile {
+  id        String   @id @db.Uuid
+  email     String   @unique
+  timezone  String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  checkins  DailyCheckin[]
+  scores    RecoveryScore[]
+  meals     Meal[]
+  imports   ImportJob[]
+
+  @@map("user_profiles")
+}
+
+model DailyCheckin {
+  id           String       @id @default(uuid()) @db.Uuid
+  userId       String       @db.Uuid @map("user_id")
+  date         DateTime     @db.Date
+  sleepHours   Decimal      @map("sleep_hours")
+  stress       Int
+  soreness     Int
+  trainingLoad TrainingLoad @map("training_load")
+  alcohol      AlcoholIntake
+  energy       Int
+  restingHr    Int?         @map("resting_hr")
+  hrv          Decimal?
+  notes        String?
+  createdAt    DateTime     @default(now()) @map("created_at")
+  updatedAt    DateTime     @updatedAt @map("updated_at")
+
+  user UserProfile @relation(fields: [userId], references: [id])
+
+  @@unique([userId, date])
+  @@map("daily_checkins")
+}
+
+model RecoveryScore {
+  id            String   @id @default(uuid()) @db.Uuid
+  userId        String   @db.Uuid @map("user_id")
+  date          DateTime @db.Date
+  recoveryScore Int      @map("recovery_score")
+  pillars       Json
+  explanation   String
+  modelVersion  String   @map("model_version")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  user UserProfile @relation(fields: [userId], references: [id])
+
+  @@unique([userId, date])
+  @@map("recovery_scores")
+}
+
+model Meal {
+  id        String    @id @default(uuid()) @db.Uuid
+  userId    String    @db.Uuid @map("user_id")
+  timestamp DateTime
+  photoUrl  String    @map("photo_url")
+  mealType  MealType? @map("meal_type")
+  tags      String[]
+  note      String?
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  user UserProfile @relation(fields: [userId], references: [id])
+
+  @@map("meals")
+}
+
+model ImportJob {
+  id               String       @id @default(uuid()) @db.Uuid
+  userId           String       @db.Uuid @map("user_id")
+  type             String
+  originalFilename String       @map("original_filename")
+  status           ImportStatus
+  rowErrors        Json?        @map("row_errors")
+  createdAt        DateTime     @default(now()) @map("created_at")
+
+  user UserProfile @relation(fields: [userId], references: [id])
+
+  @@map("import_jobs")
+}
