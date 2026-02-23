@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { createOrUpdateCheckin } from "./actions";
 import Disclaimer from "../../components/legal/Disclaimer";
@@ -12,12 +13,37 @@ const ratingOptions = [1, 2, 3, 4, 5];
 
 export default function CheckinPage() {
   const { status } = useSession();
+  const router = useRouter();
   const [sleepHours, setSleepHours] = useState(7.5);
   const [stress, setStress] = useState(3);
   const [soreness, setSoreness] = useState(3);
   const [energy, setEnergy] = useState(3);
   const [trainingLoad, setTrainingLoad] = useState("light");
   const [alcohol, setAlcohol] = useState("none");
+  const [submissionState, setSubmissionState] = useState<
+    "idle" | "saving" | "saved" | "error"
+  >("idle");
+  const [submissionError, setSubmissionError] = useState<string | null>(null);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setSubmissionState("saving");
+    setSubmissionError(null);
+
+    try {
+      const formData = new FormData(event.currentTarget);
+      await createOrUpdateCheckin(formData);
+      setSubmissionState("saved");
+      router.refresh();
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Something went wrong. Please try again.";
+      setSubmissionState("error");
+      setSubmissionError(message);
+    }
+  };
 
   if (status === "loading") {
     return (
@@ -71,7 +97,7 @@ export default function CheckinPage() {
         </p>
       </header>
 
-      <form action={createOrUpdateCheckin} className="space-y-5">
+      <form className="space-y-5" onSubmit={handleSubmit}>
         <label className="flex flex-col gap-2 text-sm">
           Date
           <input
@@ -258,11 +284,22 @@ export default function CheckinPage() {
         </label>
 
         <button
-          className="w-full rounded-xl bg-ink-950 px-4 py-3 text-sm text-fog-50"
+          className="w-full rounded-xl bg-ink-950 px-4 py-3 text-sm text-fog-50 disabled:cursor-not-allowed disabled:opacity-70"
           type="submit"
+          disabled={submissionState === "saving"}
         >
-          Save check-in
+          {submissionState === "saving" ? "Saving..." : "Save check-in"}
         </button>
+
+        {submissionState === "saved" && (
+          <p className="text-sm text-ink-800">
+            Check-in saved. You can review today&apos;s snapshot in the Today tab.
+          </p>
+        )}
+
+        {submissionState === "error" && submissionError && (
+          <p className="text-sm text-rose-600">{submissionError}</p>
+        )}
       </form>
 
       <Disclaimer />
