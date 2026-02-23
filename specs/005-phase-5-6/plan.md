@@ -1,14 +1,16 @@
-# Implementation Plan: RecoveryOS MVP Web App (Phases 5-6)
+# Implementation Plan: RecoveryOS MVP Web App (Phases 5-7)
 
 **Branch**: `005-phase-5-6` | **Date**: 2026-02-23 | **Spec**: `/Users/michaelmorris/Documents/GitHub/recoveryOS-web/specs/005-phase-5-6/spec.md`
 **Input**: Feature specification from `/specs/005-phase-5-6/spec.md`
 
 ## Summary
 
-Deliver Phases 5-6 of the RecoveryOS MVP: meal photo capture with tags and
-historic CSV import with preview/confirmation and score recomputation. Build on
-existing check-in and scoring flows in the Next.js PWA with Supabase for auth,
-storage, and Postgres data, prioritizing minimal friction and explainable outputs.
+Deliver Phases 5-7 of the RecoveryOS MVP: meal photo capture with tags,
+historic CSV import with preview/confirmation and score recomputation, plus
+polish tasks (settings scaffold, exports, account deletion, privacy copy, empty
+states). Build on existing check-in and scoring flows in the Next.js PWA with
+Supabase for auth, storage, and Postgres data, prioritizing minimal friction and
+explainable outputs.
 
 ## Technical Context
 

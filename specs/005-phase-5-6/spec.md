@@ -3,7 +3,7 @@
 **Feature Branch**: `005-phase-5-6`  
 **Created**: 2026-02-23  
 **Status**: Draft  
-**Scope**: Phases 5-6 (User Stories 3-4: Meals + Historic Import)  
+**Scope**: Phases 5-7 (User Stories 3-4 + Polish tasks)  
 **Input**: User description: "Define an MVP recovery operating system with daily check-ins, recovery score and guidance, trend dashboards, meal photo capture, and historic CSV import, targeted at men 40–55, with non-medical framing."
 
 ## Clarifications

@@ -1,14 +1,14 @@
 ---
 
-description: "Phases 5-6 task list for meals and historic import"
+description: "Phases 5-7 task list for meals, historic import, and polish"
 ---
 
-# Tasks: RecoveryOS Phases 5-6 - Meals + Historic Import
+# Tasks: RecoveryOS Phases 5-7 - Meals + Historic Import + Polish
 
 **Input**: Design documents from `/specs/005-phase-5-6/`
 **Prerequisites**: plan.md (required), spec.md (required), data-model.md, contracts/, research.md, quickstart.md
 
-**Scope Note**: Phases 1-4 are complete in the codebase; this task list focuses on Phases 5-6 only.
+**Scope Note**: Phases 1-4 are complete in the codebase; this task list focuses on Phases 5-7 only.
 
 ## Format: `[ID] [P?] [Story] Description`
 
@@ -53,3 +53,18 @@ description: "Phases 5-6 task list for meals and historic import"
 - [X] T040 [US4] Recompute scores for imported dates in `lib/scoring/v1.ts`
 
 **Checkpoint**: User Story 4 should be fully functional and testable independently.
+
+---
+
+## Phase 7: Polish & Cross-Cutting Concerns
+
+**Goal**: Round out MVP experience with settings scaffold, exports, account deletion, privacy copy, and reusable empty states.
+
+### Implementation for Phase 7
+
+- [X] T041 [P] Add settings page scaffolding in `app/settings/page.tsx`
+- [X] T042 [P] Add data export endpoint handler in `app/api/exports/route.ts`
+- [X] T043 [P] Add account deletion handler in `app/api/account/delete/route.ts`
+- [X] T044 [P] Add privacy copy and non-medical disclaimer references in `components/legal/PrivacyCopy.tsx`
+- [X] T045 Add empty states and error handling in `components/ui/EmptyState.tsx`
+- [X] T046 Run quickstart checklist against `specs/005-phase-5-6/quickstart.md`
