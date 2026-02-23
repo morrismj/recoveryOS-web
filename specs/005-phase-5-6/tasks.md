@@ -45,11 +45,11 @@ description: "Phases 5-6 task list for meals and historic import"
 
 ### Implementation for User Story 4
 
-- [ ] T035 [P] [US4] Build import UI and preview table in `app/import/page.tsx`
-- [ ] T036 [US4] Implement CSV parsing and validation in `lib/import/csv.ts`
-- [ ] T037 [US4] Implement import preview action in `app/import/actions.ts`
-- [ ] T038 [US4] Implement import confirmation action in `app/import/actions.ts`
-- [ ] T039 [US4] Persist import job and errors in `lib/db/imports.ts`
-- [ ] T040 [US4] Recompute scores for imported dates in `lib/scoring/v1.ts`
+- [X] T035 [P] [US4] Build import UI and preview table in `app/import/page.tsx`
+- [X] T036 [US4] Implement CSV parsing and validation in `lib/import/csv.ts`
+- [X] T037 [US4] Implement import preview action in `app/import/actions.ts`
+- [X] T038 [US4] Implement import confirmation action in `app/import/actions.ts`
+- [X] T039 [US4] Persist import job and errors in `lib/db/imports.ts`
+- [X] T040 [US4] Recompute scores for imported dates in `lib/scoring/v1.ts`
 
 **Checkpoint**: User Story 4 should be fully functional and testable independently.

@@ -26,7 +26,11 @@ const parseNumber = (value: string) => {
 };
 
 export function parseCsv(text: string): CsvPreview {
-  const lines = text.trim().split(/\r?\n/);
+  const lines = text
+    .trim()
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
   if (lines.length === 0) {
     return { validRows: [], invalidRows: [{ row: 0, message: "Empty CSV" }] };
   }

@@ -88,3 +88,10 @@ export function computeRecoveryScore(input: DailyCheckinInput): RecoveryScoreRes
     model_version: "v1"
   };
 }
+
+export function recomputeScoresForImport(inputs: DailyCheckinInput[]) {
+  return inputs.map((input) => ({
+    date: input.date,
+    score: computeRecoveryScore(input)
+  }));
+}
