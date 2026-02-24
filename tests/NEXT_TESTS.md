@@ -13,7 +13,7 @@
 - Validation rules and score recomputation on edits.
 - Correct persistence of pillars/explanation/model version.
 
-4. Auth/session boundaries
+4. Auth/session boundaries (done)
 - getCurrentUserId behavior for missing session.
 - getCurrentUserId behavior for expired session.
 - getCurrentUserId behavior for valid user.
