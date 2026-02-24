@@ -1,6 +1,6 @@
 # Next Tests To Build
 
-1. Today page rendering behavior
+1. Today page rendering behavior (done)
 - If no user session, shows sign-in CTA and hides score/empty state.
 - If user + no score, shows EmptyState with correct CTA.
 - If user + score, renders ScoreCard with mapped pillars and protocol.
