@@ -9,7 +9,7 @@
 - Integration test against a test database to confirm upsertRecoveryScore writes.
 - Verify getLatestRecoveryScore returns the newest record.
 
-3. Check-in flow logic
+3. Check-in flow logic (done)
 - Validation rules and score recomputation on edits.
 - Correct persistence of pillars/explanation/model version.
 
