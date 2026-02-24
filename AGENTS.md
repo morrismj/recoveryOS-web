@@ -26,4 +26,5 @@ TypeScript (Node.js 20.x runtime): Follow standard conventions
 - 001-build-recoveryos-pwa: Added TypeScript (Node.js 20.x runtime) + Next.js (App Router), TailwindCSS, Supabase JS client, Recharts
 
 <!-- MANUAL ADDITIONS START -->
+When the user says "commit", commit and push by default unless they say otherwise.
 <!-- MANUAL ADDITIONS END -->
