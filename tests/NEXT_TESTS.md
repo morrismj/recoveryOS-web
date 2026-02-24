@@ -5,7 +5,7 @@
 - If user + no score, shows EmptyState with correct CTA.
 - If user + score, renders ScoreCard with mapped pillars and protocol.
 
-2. Scores DB integration (Prisma)
+2. Scores DB integration (Prisma) (done, gated by RUN_DB_TESTS=1 and TEST_DATABASE_URL)
 - Integration test against a test database to confirm upsertRecoveryScore writes.
 - Verify getLatestRecoveryScore returns the newest record.
 
